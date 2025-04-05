@@ -35,6 +35,7 @@ const defaultChartProps: ChartProps = {
 const DonutStory: StoryFn<DonutProps & { width?: number; height?: number }> = (args): ReactElement => {
 	const { width, height, ...donutProps } = args;
 	const chartProps = useChartProps({ ...defaultChartProps, width: width ?? 350, height: height ?? 350 });
+  console.log(chartProps)
 	return (
 		<Chart {...chartProps}>
 			<Donut {...donutProps} />
