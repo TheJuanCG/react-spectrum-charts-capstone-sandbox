@@ -13289,10 +13289,10 @@ vega@^5.29.0:
     vega-voronoi "~4.2.2"
     vega-wordcloud "~4.1.4"
 
-venn-helper@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/venn-helper/-/venn-helper-2.0.0.tgz#b10eb3263728ae8975e4fbd17f31c8174a88e18b"
-  integrity sha512-rxptAJa763rF5i8TIU3bdeL5sjAZ0es5RYQQpFUWFNf/5l+SxBMDTSuT/SYIHI8LiTV2toaVztYTzaDJYXwY2Q==
+venn-helper@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/venn-helper/-/venn-helper-2.1.1.tgz#599f03e61bc1f488aac8702350388d9286584074"
+  integrity sha512-4P48t7ox7oLanzdo0+oFlWtIbE7vMYRRDHeD6/prDVMofxtm4HYlw//Z4DyyhYjaLd6NPeJ9YLR5rhctWxbISA==
   dependencies:
     d3-selection "^1.0.2"
     d3-transition "^1.0.1"

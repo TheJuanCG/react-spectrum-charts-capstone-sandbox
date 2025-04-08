@@ -72,6 +72,7 @@ export const addData = produce<Data[], [DonutSpecProps]>((data, props) => {
 	const { name, isBoolean } = props;
 	const filteredTableIndex = data.findIndex((d) => d.name === FILTERED_TABLE);
 
+
 	//set up transform
 	data[filteredTableIndex].transform = data[filteredTableIndex].transform ?? [];
 	data[filteredTableIndex].transform?.push(...getPieTransforms(props));

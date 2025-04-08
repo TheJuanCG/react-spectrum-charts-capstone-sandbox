@@ -58,6 +58,7 @@ export default function useSpec({
 				buildSpec({
 					backgroundColor,
 					children,
+          data,
 					colors,
 					colorScheme,
 					description,

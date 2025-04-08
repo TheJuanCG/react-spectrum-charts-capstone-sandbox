@@ -11,6 +11,7 @@
  */
 import { JSXElementConstructor, MutableRefObject, ReactElement, ReactNode } from 'react';
 
+import { VennProps } from '@components/Venn';
 import { Config, Data, FontWeight, Locale, NumberLocale, Padding, Spec, SymbolShape, TimeLocale, View } from 'vega';
 
 import { Icon, IconProps } from '@adobe/react-spectrum';
@@ -32,6 +33,7 @@ export type ChartElement = ReactElement<ChartProps, JSXElementConstructor<ChartP
 export type ChartPopoverElement = ReactElement<ChartPopoverProps, JSXElementConstructor<ChartPopoverProps>>;
 export type ChartTooltipElement = ReactElement<ChartTooltipProps, JSXElementConstructor<ChartTooltipProps>>;
 export type DonutElement = ReactElement<DonutProps, JSXElementConstructor<DonutProps>>;
+export type VennElement = ReactElement<VennProps, JSXElementConstructor<VennProps>>;
 export type DonutSummaryElement = ReactElement<DonutSummaryProps, JSXElementConstructor<DonutSummaryProps>>;
 export type LegendElement = ReactElement<LegendProps, JSXElementConstructor<LegendProps>>;
 export type LineElement = ReactElement<LineProps, JSXElementConstructor<LineProps>>;
@@ -900,7 +902,8 @@ export type ChartChildElement =
 	| LineElement
 	| ScatterElement
 	| TitleElement
-	| ComboElement;
+	| ComboElement
+	| VennElement;
 export type MarkChildElement =
 	| AnnotationElement
 	| ChartTooltipElement

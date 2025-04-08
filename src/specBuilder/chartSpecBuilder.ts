@@ -58,6 +58,7 @@ import {
   SymbolShapes,
   SymbolSize,
   TitleElement,
+  VennElement,
 } from '../types';
 import { addArea } from './area/areaSpecBuilder';
 import { addAxis } from './axis/axisSpecBuilder';
@@ -82,6 +83,7 @@ import {
   initializeSpec,
 } from './specUtils';
 import { addTitle } from './title/titleSpecBuilder';
+import { addVenn } from './venn/vennSpecBuilder';
 
 export function buildSpec(props: SanitizedSpecProps) {
   const {
@@ -95,6 +97,7 @@ export function buildSpec(props: SanitizedSpecProps) {
     highlightedSeries,
     idKey,
     lineTypes,
+    data,
     lineWidths,
     opacities,
     symbolShapes,
@@ -146,6 +149,8 @@ export function buildSpec(props: SanitizedSpecProps) {
         case Donut.displayName:
           donutCount++;
           return addDonut(acc, { ...(cur as DonutElement).props, ...specProps, index: donutCount });
+        case Venn.displayName:
+          return addVenn(acc, { ...(cur as VennElement).props, ...specProps, index: 1, data: data });
         case Legend.displayName:
           legendCount++;
           return addLegend(acc, {
@@ -170,10 +175,8 @@ export function buildSpec(props: SanitizedSpecProps) {
         case Combo.displayName:
           comboCount++;
           return addCombo(acc, { ...(cur as ComboElement).props, ...specProps, index: comboCount });
-        case Venn.displayName:
-          return addVenn(acc, )
-          
-				default:
+
+        default:
           console.error(`Invalid component type: ${cur.type.displayName} is not a supported <Chart> child`);
           return acc;
       }
