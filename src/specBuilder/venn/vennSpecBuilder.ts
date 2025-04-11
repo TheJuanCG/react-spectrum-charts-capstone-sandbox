@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { VennProps } from '@components/Venn';
+import { VennProps } from '../../types';
 import { produce } from 'immer';
 import { Data, FormulaTransform, Mark, PieTransform, Scale, Signal, Spec } from 'vega';
 import {
@@ -186,8 +186,7 @@ export const addVenn = produce<
 		//title: 'Sets'
 	// });
 	spec.data = transformTable(spec.data ?? [], props);
-	spec.scales = addScales(spec.scales ?? [], VennProps);
-	console.log(VennProps)
+	spec.scales = addScales(spec.scales ?? [], props);
 });
 
 // export const addData = produce<Data[], [VennProps]>((data, props) => {
