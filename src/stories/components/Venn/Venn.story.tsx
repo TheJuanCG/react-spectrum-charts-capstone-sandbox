@@ -17,6 +17,7 @@ import { Chart } from 'Chart';
 
 import { ChartProps } from '../../../types';
 import { Legend } from '@components/Legend';
+import { ChartTooltip } from '@components/ChartTooltip';
 
 export default {
   title: "RSC/Venn",
@@ -51,6 +52,7 @@ const VennStory: StoryFn<VennProps> = (args) => {
     <Chart {...chartProps} debug>
       <Venn orientation={-Math.PI / 2} normalize />
 	  <Legend highlight/>
+	  <ChartTooltip />
     </Chart>
 	);
 

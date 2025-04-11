@@ -111,7 +111,7 @@ export const addVenn = produce<
 				shape: { value: 'circle' },
 				fillOpacity: { value: 1 },
 				fill: { scale: COLOR_SCALE, field: 'set' },
-				tooltip: [{ field: 'text' }],
+				//tooltip: [{ field: 'text' }],
 			},
 			hover: {
 				fillOpacity: { value: 0.5 },
@@ -130,7 +130,7 @@ export const addVenn = produce<
 				path: { field: 'path' },
 				fill: { value: 'grey' },
 				fillOpacity: { value: 0 },
-				tooltip: [{ field: 'text' }],
+				//tooltip: [{ field: 'text' }],
 			},
 
 			hover: {
@@ -207,6 +207,13 @@ export const addScales = produce<Scale[], [VennProps]>((scales, props) => {
 export const transformTable = produce<Data[], [VennProps]>((data, props) => {
 	const tableIndex = data.findIndex((d) => d.name === TABLE);
 	data[tableIndex].transform = data[tableIndex].transform ?? [];
+
+	// Could be a prop if want to include intersections in the legend
+	data[tableIndex].transform.push({
+		type: 'filter',
+		expr: `datum.sets.length <= 1`,
+	});
+
 	data[tableIndex].transform.push({
 		type: 'formula',
 		as: 'set',
