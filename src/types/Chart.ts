@@ -405,6 +405,13 @@ export interface MarkProps extends BaseProps {
 	metric?: string;
 }
 
+export interface VennProps extends MarkProps {
+	// Normalize the diagram to fit within chart bounds
+	normalize?: boolean;
+	// otaion of the diagram in radian
+	orientation?: number;
+}
+
 export type StaticValue<T> = { value: T };
 
 export type FacetType =

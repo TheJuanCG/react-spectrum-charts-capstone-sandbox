@@ -121,7 +121,7 @@ export function buildSpec(props: SanitizedSpecProps) {
   buildOrder.set(Axis, 2);
   buildOrder.set(Title, 3);
 
-  let { areaCount, axisCount, barCount, comboCount, donutCount, legendCount, lineCount, scatterCount } =
+  let { areaCount, axisCount, barCount, comboCount, donutCount, legendCount, lineCount, scatterCount, vennCount} =
     initializeComponentCounts();
   const specProps = { colorScheme, idKey, highlightedItem };
   spec = [...children]
@@ -150,7 +150,8 @@ export function buildSpec(props: SanitizedSpecProps) {
           donutCount++;
           return addDonut(acc, { ...(cur as DonutElement).props, ...specProps, index: donutCount });
         case Venn.displayName:
-          return addVenn(acc, { ...(cur as VennElement).props, ...specProps, index: 1, data: data });
+          vennCount++;
+          return addVenn(acc, { ...(cur as VennElement).props, ...specProps, index: vennCount, data: data });
         case Legend.displayName:
           legendCount++;
           return addLegend(acc, {
@@ -213,6 +214,7 @@ const initializeComponentCounts = () => {
     legendCount: -1,
     lineCount: -1,
     scatterCount: -1,
+    vennCount: -1
   };
 };
 

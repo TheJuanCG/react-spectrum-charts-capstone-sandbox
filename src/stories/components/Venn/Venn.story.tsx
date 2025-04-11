@@ -16,6 +16,7 @@ import { bindWithProps } from '@test-utils';
 import { Chart } from 'Chart';
 
 import { ChartProps } from '../../../types';
+import { Legend } from '@components/Legend';
 
 export default {
   title: "RSC/Venn",
@@ -24,12 +25,16 @@ export default {
 
 const defaultChartProps: ChartProps = {
 	data: [
-		{ sets: ['A'], size: 12 },
+		{ sets: ['A'], size: 6 },
 		{ sets: ['B'], size: 12 },
+		{ sets: ['C'], size: 18 },
+		{ sets: ['A', 'B'], size: 2 },
+		{ sets: ['A', 'C'], size: 4 },
+		{ sets: ['B', 'C'], size: 6 },
 		{ sets: ['A', 'B'], size: 4 },
 	],
 
-	height: 350,
+	height: 450,
 	width: 600,
 };
 
@@ -38,8 +43,10 @@ const VennStory: StoryFn<VennProps> = (args) => {
 	return (
     <Chart {...chartProps} debug>
       <Venn orientation={-Math.PI / 2} normalize />
+	  <Legend position='top' title='Sets'/>
     </Chart>
 	);
+
 };
 
 const Basic = bindWithProps(VennStory);

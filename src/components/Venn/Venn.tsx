@@ -11,14 +11,14 @@
  */
 import { FC } from 'react';
 
-import { MarkProps } from '../../types';
+import { VennProps } from '../../types';
 
-export interface VennProps extends MarkProps {
-  /** angle for orientation of the venn diagram*/
-  orientation: number;
-  /** wethere the Venn is normalized through chart width*/
-  normalize: boolean;
-}
+// export interface VennProps extends MarkProps {
+//   /** angle for orientation of the venn diagram*/
+//   orientation: number;
+//   /** wethere the Venn is normalized through chart width*/
+//   normalize: boolean;
+// }
 
 const Venn: FC<VennProps> = ({ orientation, normalize }) => {
   return null;
@@ -26,4 +26,4 @@ const Venn: FC<VennProps> = ({ orientation, normalize }) => {
 
 Venn.displayName = 'Venn';
 
-export { Venn };
+export { Venn }
