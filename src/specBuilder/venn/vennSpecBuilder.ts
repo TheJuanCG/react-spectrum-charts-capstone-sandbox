@@ -11,7 +11,7 @@
  */
 import { VennProps } from '@components/Venn';
 import { produce } from 'immer';
-import { Spec } from 'vega';
+import { Data, FormulaTransform, Mark, PieTransform, Scale, Signal, Spec } from 'vega';
 import {
 	type CircleRecord,
 	type TextCenterRecord,
@@ -24,7 +24,7 @@ import {
 
 // Added in these to match bar spec builder
 import { addFieldToFacetScaleDomain } from '@specBuilder/scale/scaleSpecBuilder';
-import { COLOR_SCALE, DEFAULT_COLOR } from '@constants';
+import { COLOR_SCALE, DEFAULT_COLOR, DEFAULT_COLOR_SCHEME, DEFAULT_METRIC, FILTERED_TABLE, TABLE } from '@constants';
 import { getScaleIndexByName } from '@specBuilder/scale/scaleSpecBuilder';
 
 import type { ColorScheme, HighlightedItem } from '../../types';
@@ -48,6 +48,7 @@ export const addVenn = produce<
 		orientation, 
 		data, 
 		color = DEFAULT_COLOR,
+		colorScheme = DEFAULT_COLOR_SCHEME,
 		...props
 	}) => {
 
@@ -108,15 +109,15 @@ export const addVenn = produce<
 				y: { field: 'y' },
 				size: { field: 'size' },
 				shape: { value: 'circle' },
-				fillOpacity: { value: 0.3 },
-				fill: { scale: 'color', field: 'set' },
+				fillOpacity: { value: 1 },
+				fill: { scale: COLOR_SCALE, field: 'set' },
 				tooltip: [{ field: 'text' }],
 			},
 			hover: {
 				fillOpacity: { value: 0.5 },
 			},
 			update: {
-				fillOpacity: { value: 0.3 },
+				fillOpacity: { value: 1 },
 			},
 		},
 	});
@@ -162,48 +163,53 @@ export const addVenn = produce<
 		}
 	  });
 
-	// Add color scale (you already have this)
-	spec.scales = spec.scales ?? [];
-	spec.scales?.push({
-	name: 'color',
-	type: 'ordinal',
-	domain: { data: 'circles', field: 'set' },
-	range: 'category',
-	});
-
 	// Create a signal for the color field
 	// tells the chart  component which field in data should be used for colorEncoding
 	// So, helps understand which data field contain the categories that should be assigned colors and displayed in the legend
-	spec.signals = spec.signals ?? [];
+	// spec.signals = spec.signals ?? [];
 
-	spec.signals.push({
-		name: 'colorField',
-		value: 'set'
-	});
+	// spec.signals.push({
+	// 	name: 'colorField',
+	// 	value: 'set'
+	// });
 
 	// });
 
-	// Register field for Legend integration
-	//addFieldToFacetScaleDomain(spec.scales, COLOR_SCALE, color);  // Add this line
 
-	// Add invisible legend marker
-	spec.legends = spec.legends ?? [];
-	spec.legends.push({
-		fill: 'color',
-		orient: 'right',  // Position it at the top
-		title: 'Sets',  // Add a title
-		labelFont: "adobe-clean, 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Air', 'Helvetica Neue', 'Helvetica', 'Ubuntu', 'Trebuchet MS', 'Lucida Grande', sans-serif",
-		labelFontSize: 14,
-		labelColor: { value: 'rgb(235, 235, 235)' },
-		titleFont: "adobe-clean, 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Air', 'Helvetica Neue', 'Helvetica', 'Ubuntu', 'Trebuchet MS', 'Lucida Grande', sans-serif",
-		titleFontSize: 16,
-		titleColor: { value: 'rgb(235, 235, 235)' },
-		symbolType: 'circle',
-		symbolSize: 100,
-		symbolFillOpacity: 0.7,
-		padding: 10,
-		offset: 10,
-		// No opacity encodings here since we want it visible
-	});
+
+	// spec.legends = spec.legends ?? [];
+
+	// // Add legend for color scale
+	// spec.legends.push({
+	// 	fill: 'color',
+	// 	orient: 'right'
+		//title: 'Sets'
+	// });
+	spec.data = transformTable(spec.data ?? [], props);
+	spec.scales = addScales(spec.scales ?? [], VennProps);
+	console.log(VennProps)
 });
 
+// export const addData = produce<Data[], [VennProps]>((data, props) => {
+// 	const filteredTableIndex = data.findIndex((d) => d.name === FILTERED_TABLE);
+
+export const addScales = produce<Scale[], [VennProps]>((scales, props) => {
+	//const { color } = props;
+	addFieldToFacetScaleDomain(scales, COLOR_SCALE, 'set');
+	// scales.push({
+	// 	name: COLOR_SCALE,
+	// 	type: 'ordinal',
+	// 	domain: { data: 'circles', field: 'set' },
+	// 	range: {signal: 'colors'}
+	// });
+})
+
+export const transformTable = produce<Data[], [VennProps]>((data, props) => {
+	const tableIndex = data.findIndex((d) => d.name === TABLE);
+	data[tableIndex].transform = data[tableIndex].transform ?? [];
+	data[tableIndex].transform.push({
+		type: 'formula',
+		as: 'set',
+		expr: `join(datum.sets, 'n')`,
+	});
+})

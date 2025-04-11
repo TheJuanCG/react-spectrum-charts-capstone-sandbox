@@ -32,7 +32,14 @@ const defaultChartProps: ChartProps = {
 		{ sets: ['A', 'C'], size: 4 },
 		{ sets: ['B', 'C'], size: 6 },
 		{ sets: ['A', 'B'], size: 4 },
+		{ sets: ['A', 'B', 'C'], size: 1 }
 	],
+
+	// data: [
+	// 	{count: 6, set: 'A'},
+	// 	{count: 12, set: 'B'},
+	// 	{count: 18, set: 'C'},
+	// ],
 
 	height: 450,
 	width: 600,
@@ -43,7 +50,7 @@ const VennStory: StoryFn<VennProps> = (args) => {
 	return (
     <Chart {...chartProps} debug>
       <Venn orientation={-Math.PI / 2} normalize />
-	  <Legend position='top' title='Sets'/>
+	  <Legend highlight/>
     </Chart>
 	);
 

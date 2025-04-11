@@ -38,6 +38,7 @@ const DonutStory: StoryFn<DonutProps & { width?: number; height?: number }> = (a
 	return (
 		<Chart {...chartProps} debug>
 			<Donut {...donutProps} />
+			<Legend highlight/>
 		</Chart>
 	);
 };
