@@ -11,13 +11,13 @@
  */
 import { ChartTooltip } from '@components/ChartTooltip';
 import { Legend } from '@components/Legend';
-import { Venn, VennProps } from '@components/Venn';
+import { Venn } from '@components/Venn';
 import useChartProps from '@hooks/useChartProps';
 import { StoryFn } from '@storybook/react';
 import { bindWithProps } from '@test-utils';
 import { Chart } from 'Chart';
 
-import { ChartProps } from '../../../types';
+import { ChartProps, VennProps, } from '../../../types';
 
 export default {
 	title: 'RSC/Venn',
@@ -44,25 +44,19 @@ const VennStory: StoryFn<VennProps> = (args) => {
 	const chartProps = useChartProps({ ...defaultChartProps });
 	return (
 		<Chart {...chartProps} debug>
-			<Venn orientation={-Math.PI / 2} normalize />
+			<Venn orientation={-Math.PI / 2} normalize {...args}/>
 			<Legend highlight />
 		</Chart>
 	);
 };
 
-const VennStoryWithToolTip: StoryFn<VennProps> = (args) => {
-	const chartProps = useChartProps({ ...defaultChartProps });
-	return (
-		<Chart {...chartProps} debug>
-			<Venn orientation={-Math.PI / 2} normalize>
-				<ChartTooltip />
-			</Venn>
-			<Legend highlight />
-		</Chart>
-	);
-};
+const interactiveChildren = [<ChartTooltip key={0}/>]
 
 const Basic = bindWithProps(VennStory);
-const WithToolTip = bindWithProps(VennStoryWithToolTip);
+
+const WithToolTip = bindWithProps(VennStory);
+WithToolTip.args = {
+  children: interactiveChildren
+}
 
 export { Basic, WithToolTip };

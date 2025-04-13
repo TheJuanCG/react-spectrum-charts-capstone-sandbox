@@ -101,7 +101,6 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 				tooltip: getTooltip(props.children, props.name),
 				size: { field: 'size' },
 				shape: { value: 'circle' },
-				//fillOpacity: { value: 0.3 },
 				fill: { scale: COLOR_SCALE, field: 'set' },
 			},
 			update: {
@@ -172,7 +171,6 @@ export const getVennTransforms = (): (FormulaTransform | FilterTransform)[] => [
 export const addSignals = produce<Signal[], [VennSpecProps]>((signals, props) => {
 	const { children, name, idKey } = props;
 	if (!hasInteractiveChildren(children)) return;
-	console.log(name, idKey);
 	addHighlightedItemSignalEvents(signals, name, idKey, 1, getTooltipProps(children)?.excludeDataKeys);
 });
 
