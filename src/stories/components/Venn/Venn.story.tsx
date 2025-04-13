@@ -26,14 +26,14 @@ export default {
 
 const defaultChartProps: ChartProps = {
 	data: [
-		{ sets: ['A'], size: 6 },
-		{ sets: ['B'], size: 12 },
-		{ sets: ['C'], size: 18 },
-		{ sets: ['A', 'B'], size: 2 },
-		{ sets: ['A', 'C'], size: 4 },
-		{ sets: ['B', 'C'], size: 6 },
-		{ sets: ['A', 'B'], size: 4 },
-		{ sets: ['A', 'B', 'C'], size: 1 },
+		{ sets: ['A'], radius: 6 },
+		{ sets: ['B'], radius: 12 },
+		{ sets: ['C'], radius: 18 },
+		{ sets: ['A', 'B'], radius: 2 },
+		{ sets: ['A', 'C'], radius: 4 },
+		{ sets: ['B', 'C'], radius: 6 },
+		{ sets: ['A', 'B'], radius: 4 },
+		{ sets: ['A', 'B', 'C'], radius: 1 },
 	],
 
 	height: 450,
@@ -44,7 +44,7 @@ const VennStory: StoryFn<VennProps> = (args) => {
 	const chartProps = useChartProps({ ...defaultChartProps });
 	return (
 		<Chart {...chartProps} debug>
-			<Venn orientation={-Math.PI / 2} normalize {...args}/>
+			<Venn orientation={-Math.PI / 2} normalize {...args} metric='radius'/>
 			<Legend highlight />
 		</Chart>
 	);

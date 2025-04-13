@@ -20,7 +20,7 @@ import { VennProps } from '../../types';
 //   normalize: boolean;
 // }
 
-const Venn: FC<VennProps> = ({ orientation, normalize }) => {
+const Venn: FC<VennProps> = ({ orientation, normalize, setField }) => {
   return null;
 };
 

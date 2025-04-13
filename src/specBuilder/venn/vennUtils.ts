@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { ChartData } from 'types';
+import { ChartData, VennSpecProps } from 'types';
 import {
 	type CircleRecord,
 	type TextCenterRecord,
@@ -20,16 +20,29 @@ import {
 	venn,
 } from 'venn-helper';
 
-export const getVennSolution = ({
-	data,
-	orientation=Math.PI,
-	normalize=false,
-}: {
-	data: ChartData;
-	orientation: number | undefined;
-	normalize: boolean | undefined;
-}) => {
-	const filteredData = data.filter((datum) => datum.size !== 0 && datum.sets.length > 0);
+export const getVennSolution = (props: VennSpecProps) => {
+	const { data, orientation, normalize, metric, setField } = props;
+
+	// map to object that venn-helper library expects
+	// or condition is to limit it to just 1 loop to map
+	let filteredData =
+		setField || metric
+			? data.map((datum) => {
+					const ret = {
+						...datum,
+						sets: setField ? [...datum[setField]] : [...datum.sets],
+						size: metric ? datum[metric] : datum.size,
+					};
+
+					if (setField) delete ret[setField];
+					if (metric) delete ret[metric];
+
+					return ret;
+			  })
+			: data;
+
+	filteredData = filteredData.filter((datum) => datum.size !== 0 && datum.sets.length > 0);
+
 
 	let circles: CircleRecord = {};
 	let textCenters: TextCenterRecord = {};
@@ -61,6 +74,7 @@ export const getVennSolution = ({
 		set: key,
 		x: circle.x,
 		y: circle.y,
+		// the size represents the radius, to scale we need to convert to the area of the square
 		size: Math.pow(circle.radius * 2, 2),
 		text: key,
 		textX: textCenters[key].x,

@@ -11,7 +11,6 @@
  */
 import { JSXElementConstructor, MutableRefObject, ReactElement, ReactNode } from 'react';
 
-import { VennProps } from '@components/Venn';
 import { Config, Data, FontWeight, Locale, NumberLocale, Padding, Spec, SymbolShape, TimeLocale, View } from 'vega';
 
 import { Icon, IconProps } from '@adobe/react-spectrum';
@@ -410,6 +409,7 @@ export interface VennProps extends MarkProps {
 	normalize?: boolean;
 	// otaion of the diagram in radian
 	orientation?: number;
+  setField?: string
 }
 
 export type StaticValue<T> = { value: T };

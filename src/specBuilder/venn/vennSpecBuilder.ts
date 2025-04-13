@@ -41,6 +41,7 @@ export const addVenn = produce<
 			normalize = false,
 			orientation = Math.PI,
 			name,
+      metric,
 			children,
 			index = 0,
 			color = DEFAULT_COLOR,
@@ -58,6 +59,7 @@ export const addVenn = produce<
 			color,
 			orientation,
 			data: data,
+      metric: metric,
 			...props,
 		};
 		spec.data = addData(spec.data ?? [], vennProps);
@@ -68,11 +70,7 @@ export const addVenn = produce<
 );
 
 export const addData = produce<Data[], [VennSpecProps]>((data, props) => {
-	const { circles, intersections } = getVennSolution({
-		data: props.data,
-		orientation: props.orientation,
-		normalize: props.normalize,
-	});
+	const { circles, intersections } = getVennSolution(props);
 
 	data.push({
 		name: 'circles',
