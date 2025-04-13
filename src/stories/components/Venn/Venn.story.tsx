@@ -9,6 +9,8 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+import { ChartTooltip } from '@components/ChartTooltip';
+import { Legend } from '@components/Legend';
 import { Venn, VennProps } from '@components/Venn';
 import useChartProps from '@hooks/useChartProps';
 import { StoryFn } from '@storybook/react';
@@ -16,13 +18,11 @@ import { bindWithProps } from '@test-utils';
 import { Chart } from 'Chart';
 
 import { ChartProps } from '../../../types';
-import { Legend } from '@components/Legend';
-import { ChartTooltip } from '@components/ChartTooltip';
 
 export default {
-  title: "RSC/Venn",
-  component: Venn
-}
+	title: 'RSC/Venn',
+	component: Venn,
+};
 
 const defaultChartProps: ChartProps = {
 	data: [
@@ -33,14 +33,8 @@ const defaultChartProps: ChartProps = {
 		{ sets: ['A', 'C'], size: 4 },
 		{ sets: ['B', 'C'], size: 6 },
 		{ sets: ['A', 'B'], size: 4 },
-		{ sets: ['A', 'B', 'C'], size: 1 }
+		{ sets: ['A', 'B', 'C'], size: 1 },
 	],
-
-	// data: [
-	// 	{count: 6, set: 'A'},
-	// 	{count: 12, set: 'B'},
-	// 	{count: 18, set: 'C'},
-	// ],
 
 	height: 450,
 	width: 600,
@@ -49,15 +43,26 @@ const defaultChartProps: ChartProps = {
 const VennStory: StoryFn<VennProps> = (args) => {
 	const chartProps = useChartProps({ ...defaultChartProps });
 	return (
-    <Chart {...chartProps} debug>
-      <Venn orientation={-Math.PI / 2} normalize />
-	  <Legend highlight/>
-	  <ChartTooltip />
-    </Chart>
+		<Chart {...chartProps} debug>
+			<Venn orientation={-Math.PI / 2} normalize />
+			<Legend highlight />
+		</Chart>
 	);
+};
 
+const VennStoryWithToolTip: StoryFn<VennProps> = (args) => {
+	const chartProps = useChartProps({ ...defaultChartProps });
+	return (
+		<Chart {...chartProps} debug>
+			<Venn orientation={-Math.PI / 2} normalize>
+				<ChartTooltip />
+			</Venn>
+			<Legend highlight />
+		</Chart>
+	);
 };
 
 const Basic = bindWithProps(VennStory);
+const WithToolTip = bindWithProps(VennStoryWithToolTip);
 
-export { Basic };
+export { Basic, WithToolTip };
