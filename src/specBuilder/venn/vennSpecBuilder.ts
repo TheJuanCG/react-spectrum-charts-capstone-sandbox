@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 import { COLOR_SCALE, DEFAULT_COLOR, DEFAULT_COLOR_SCHEME, DEFAULT_METRIC, FILTERED_TABLE, TABLE } from '@constants';
-import { getTooltip, getTooltipProps, hasInteractiveChildren } from '@specBuilder/marks/markUtils';
+import { getMarkOpacity, getTooltip, getTooltipProps, hasInteractiveChildren } from '@specBuilder/marks/markUtils';
 // Added in these to match bar spec builder
 import { addFieldToFacetScaleDomain } from '@specBuilder/scale/scaleSpecBuilder';
 import { addHighlightedItemSignalEvents } from '@specBuilder/signal/signalSpecBuilder';
@@ -74,7 +74,14 @@ export const addData = produce<Data[], [VennSpecProps]>((data, props) => {
 		normalize: props.normalize,
 	});
 
-	data.push({ name: 'circles', values: circles });
+	data.push({
+		name: 'circles',
+		values: circles,
+		transform: [
+			{ type: 'formula', as: 'rscSeriesId', expr: 'datum.set' },
+			{ type: 'identifier', as: 'rscMarkId' },
+		],
+	});
 	data.push({ name: 'intersections', values: intersections });
 
 	const tableIndex = data.findIndex((d) => d.name === TABLE);
@@ -94,14 +101,11 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 				tooltip: getTooltip(props.children, props.name),
 				size: { field: 'size' },
 				shape: { value: 'circle' },
-				fillOpacity: { value: 0.3 },
+				//fillOpacity: { value: 0.3 },
 				fill: { scale: COLOR_SCALE, field: 'set' },
 			},
-			hover: {
-				fillOpacity: { value: 0.5 },
-			},
 			update: {
-				fillOpacity: { value: 0.3 },
+				opacity: getMarkOpacity(props, 0.5),
 			},
 		},
 	});
@@ -168,6 +172,7 @@ export const getVennTransforms = (): (FormulaTransform | FilterTransform)[] => [
 export const addSignals = produce<Signal[], [VennSpecProps]>((signals, props) => {
 	const { children, name, idKey } = props;
 	if (!hasInteractiveChildren(children)) return;
+	console.log(name, idKey);
 	addHighlightedItemSignalEvents(signals, name, idKey, 1, getTooltipProps(children)?.excludeDataKeys);
 });
 

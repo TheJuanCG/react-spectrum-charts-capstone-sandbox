@@ -32,9 +32,10 @@ import {
 	DonutSpecProps,
 	LineSpecProps,
 	ScatterSpecProps,
+    VennSpecProps,
 } from '../../types';
 
-type TooltipParentProps = AreaSpecProps | BarSpecProps | DonutSpecProps | LineSpecProps | ScatterSpecProps;
+type TooltipParentProps = AreaSpecProps | BarSpecProps | DonutSpecProps | LineSpecProps | ScatterSpecProps | VennSpecProps;
 
 /**
  * gets all the tooltips

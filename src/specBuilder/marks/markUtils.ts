@@ -69,6 +69,7 @@ import {
 	ProductionRuleTests,
 	ScaleType,
 	SymbolSizeFacet,
+	VennSpecProps,
 } from '../../types';
 
 /**
@@ -422,9 +423,14 @@ const getHoverSizeSignal = (size: number): SignalRef => ({
  * @param props
  * @returns
  */
-export const getMarkOpacity = (props: BarSpecProps | DonutSpecProps): ({ test?: string } & NumericValueRef)[] => {
+export const getMarkOpacity = (
+	props: BarSpecProps | DonutSpecProps | VennSpecProps,
+	opacity?: number
+): ({ test?: string } & NumericValueRef)[] => {
 	const { children, highlightedItem, idKey, name: markName } = props;
-	const rules: ({ test?: string } & NumericValueRef)[] = [DEFAULT_OPACITY_RULE];
+	const rules: ({ test?: string } & NumericValueRef)[] = [
+		{ value: opacity ? DEFAULT_OPACITY_RULE.value - opacity : DEFAULT_OPACITY_RULE.value },
+	];
 	// if there aren't any interactive components, then we don't need to add special opacity rules
 	if (!hasInteractiveChildren(children) && highlightedItem === undefined) {
 		return rules;
