@@ -43,7 +43,7 @@ import {
 	TrendlineAnnotationProps,
 	TrendlineChildElement,
 	TrendlineProps,
-  VennProps
+	VennProps,
 } from './Chart';
 
 type PartiallyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
@@ -279,7 +279,7 @@ export interface ReferenceLineSpecProps extends PartiallyRequired<ReferenceLineP
 	name: string;
 }
 
-type VennPropsWithDefaults = 'normalize' | 'orientation' | 'name'
+type VennPropsWithDefaults = 'normalize' | 'orientation' | 'name';
 
 export interface VennSpecProps extends PartiallyRequired<VennProps, VennPropsWithDefaults> {
 	children: MarkChildElement[];
@@ -287,6 +287,7 @@ export interface VennSpecProps extends PartiallyRequired<VennProps, VennPropsWit
 	highlightedItem?: HighlightedItem;
 	idKey: string;
 	index: number;
-  data: ChartData
+  dimension: string,
+	data: ChartData;
+	markType: 'symbol';
 }
-

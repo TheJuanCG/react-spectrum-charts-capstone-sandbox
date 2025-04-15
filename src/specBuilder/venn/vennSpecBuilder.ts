@@ -53,6 +53,8 @@ export const addVenn = produce<
 		const vennProps: VennSpecProps = {
 			children: sanitizeMarkChildren(children),
 			name: toCamelCase(name ?? `venn${index}`),
+      dimension: "",
+      markType: "symbol",
 			normalize,
 			index,
 			colorScheme,
@@ -115,7 +117,7 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 			enter: {
 				path: { field: 'path' },
 				fill: { value: 'grey' },
-				tooltip: getTooltip(props.children, `${props.name}_intersections`),
+				tooltip: getTooltip(props.children, `${props.name}`),
 				fillOpacity: { value: 0 },
 			},
 
@@ -135,11 +137,30 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 	marks.push({
 		type: 'text',
 		from: { data: 'circles' },
+    interactive: false,
 		encode: {
 			enter: {
 				x: { field: 'textX' },
 				y: { field: 'textY' },
 				text: { field: 'set' },
+				fontSize: { value: 20 },
+				fill: { value: 'white' },
+				fontWeight: { value: 'bold' },
+				align: { value: 'center' },
+				baseline: { value: 'middle' },
+			},
+		},
+	});
+
+	marks.push({
+		type: 'text',
+		from: { data: 'intersections' },
+    interactive: false,
+		encode: {
+			enter: {
+				x: { field: 'textX' },
+				y: { field: 'textY' },
+				text: { field: 'text' },
 				fontSize: { value: 20 },
 				fill: { value: 'white' },
 				fontWeight: { value: 'bold' },

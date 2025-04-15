@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { ChartData, VennSpecProps } from 'types';
+import { VennSpecProps } from 'types';
 import {
 	type CircleRecord,
 	type TextCenterRecord,
@@ -43,7 +43,6 @@ export const getVennSolution = (props: VennSpecProps) => {
 
 	filteredData = filteredData.filter((datum) => datum.size !== 0 && datum.sets.length > 0);
 
-
 	let circles: CircleRecord = {};
 	let textCenters: TextCenterRecord = {};
 
@@ -58,17 +57,19 @@ export const getVennSolution = (props: VennSpecProps) => {
 		textCenters = computeTextCentres(circles, filteredData);
 	}
 
-	const intersections = filteredData
-		.map((datum) => {
-			if (datum.sets.length <= 1) return null;
+	const allIntersections = filteredData.map((datum) => {
+		const setName = datum.sets.join(',');
+		const { x: textX, y: textY } = textCenters[setName];
+		return {
+			sets: datum.sets,
+			path: intersectionAreaPath(datum.sets.map((set) => circles[set])),
+			text: datum.label || datum.sets.join('∩'),
+			textY,
+			textX,
+		};
+	});
 
-			return {
-				sets: datum.sets,
-				path: intersectionAreaPath(datum.sets.map((set) => circles[set])),
-				text: datum.label || datum.sets.join('∩'),
-			};
-		})
-		.filter(Boolean);
+	const intersections = allIntersections.filter((datum) => datum.sets.length > 1);
 
 	const circlesData = Object.entries(circles).map(([key, circle]) => ({
 		set: key,
@@ -81,5 +82,5 @@ export const getVennSolution = (props: VennSpecProps) => {
 		textY: textCenters[key].y,
 	}));
 
-	return { circles: circlesData, intersections };
+	return { circles: circlesData, intersections, allIntersections };
 };

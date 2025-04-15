@@ -17,7 +17,8 @@ import { StoryFn } from '@storybook/react';
 import { bindWithProps } from '@test-utils';
 import { Chart } from 'Chart';
 
-import { ChartProps, VennProps, } from '../../../types';
+import { ChartProps, Datum, VennProps } from '../../../types';
+import { Content } from '@adobe/react-spectrum';
 
 export default {
 	title: 'RSC/Venn',
@@ -26,9 +27,9 @@ export default {
 
 const defaultChartProps: ChartProps = {
 	data: [
-		{ sets: ['A'], radius: 6 },
-		{ sets: ['B'], radius: 12 },
-		{ sets: ['C'], radius: 18 },
+		{ sets: ['A'], radius: 6, label: "" },
+		{ sets: ['B'], radius: 12, label: "" },
+		{ sets: ['C'], radius: 18, label: "" },
 		{ sets: ['A', 'B'], radius: 2 },
 		{ sets: ['A', 'C'], radius: 4 },
 		{ sets: ['B', 'C'], radius: 6 },
@@ -44,19 +45,27 @@ const VennStory: StoryFn<VennProps> = (args) => {
 	const chartProps = useChartProps({ ...defaultChartProps });
 	return (
 		<Chart {...chartProps} debug>
-			<Venn orientation={-Math.PI / 2} normalize {...args} metric='radius'/>
+			<Venn orientation={-Math.PI / 2} normalize {...args} metric="radius" />
 			<Legend highlight />
 		</Chart>
 	);
 };
 
-const interactiveChildren = [<ChartTooltip key={0}/>]
+const dialogContent = (datum: Datum) => {
+	return (
+		<Content>
+			<div>{datum.text}</div>
+		</Content>
+	);
+};
+
+const interactiveChildren = [<ChartTooltip key={0}>{dialogContent}</ChartTooltip>];
 
 const Basic = bindWithProps(VennStory);
 
 const WithToolTip = bindWithProps(VennStory);
 WithToolTip.args = {
-  children: interactiveChildren
-}
+	children: interactiveChildren,
+};
 
 export { Basic, WithToolTip };

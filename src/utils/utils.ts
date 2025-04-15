@@ -56,6 +56,7 @@ import {
 	RscElement,
 	ScatterElement,
 	TrendlineElement,
+    VennElement,
 } from '../types';
 
 type MappedElement = { name: string; element: ChartElement | RscElement };
@@ -69,6 +70,7 @@ type ElementCounts = {
 	line: number;
 	scatter: number;
 	combo: number;
+  venn: number
 };
 
 // coerces a value that could be a single value or an array of that value to an array
@@ -286,7 +288,8 @@ export const getAllElements = (
 		| typeof ChartTooltip
 		| typeof Legend
 		| typeof Line
-		| typeof Scatter,
+		| typeof Scatter
+    | typeof Venn,
 	elements: MappedElement[] = [],
 	name: string = ''
 ): MappedElement[] => {
@@ -358,6 +361,9 @@ const getElementName = (element: unknown, elementCounts: ElementCounts) => {
 		case Combo.displayName:
 			elementCounts.combo++;
 			return getComponentName(element as ComboElement, `combo${elementCounts.combo}`);
+		case Venn.displayName:
+			elementCounts.venn++;
+			return getComponentName(element as VennElement, `venn${elementCounts.venn}`);
 		default:
 			return '';
 	}
@@ -386,6 +392,7 @@ const initElementCounts = (): ElementCounts => ({
 	line: -1,
 	scatter: -1,
 	combo: -1,
+  venn: -1
 });
 
 /**

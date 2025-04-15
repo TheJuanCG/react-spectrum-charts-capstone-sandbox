@@ -102,7 +102,7 @@ export function getTooltip(
 	// skip annotations
 	if (hasTooltip(children)) {
 		const defaultTooltip = {
-			signal: `merge(datum${nestedDatum ? '.datum' : ''}, {'${COMPONENT_NAME}': '${name}'})`,
+			signal: `info(merge(datum${nestedDatum ? '.datum' : ''}, {'${COMPONENT_NAME}': '${name}'}))`,
 		};
 		// if the tooltip has an excludeDataKey prop, then disable the tooltip where that key is present
 		const excludeDataKeys = getTooltipProps(children)?.excludeDataKeys;

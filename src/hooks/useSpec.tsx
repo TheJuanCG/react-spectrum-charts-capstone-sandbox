@@ -53,6 +53,7 @@ export default function useSpec({
 
 		// or we need to build their spec
 		// stringify-parse so that all immer stuff gets cleared out
+    // if venn in children 
 		return JSON.parse(
 			JSON.stringify(
 				buildSpec({
