@@ -92,6 +92,7 @@ export const addData = produce<Data[], [VennSpecProps]>((data, props) => {
 		transform: [
 			{ type: 'formula', as: 'rscSeriesId', expr: 'datum.set' },
 			{ type: 'identifier', as: 'rscMarkId' },
+			{ type: 'formula', as: COMPONENT_NAME, expr: `"${props.name}"` },
 		],
 	});
 	data.push({ name: 'intersections', values: intersections });
@@ -126,7 +127,6 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 				shape: { value: 'circle' },
 				fill: { scale: COLOR_SCALE, field: 'set' },
 			},
-			// This is how we handle the opacity of the circles for when there are popovers and we select a set
 			update: {
 				opacity: [
 					{
@@ -150,25 +150,23 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 	marks.push({
 		type: 'path',
 		from: { data: 'intersections' },
-		// This is the name of the mark
 		name: `${markName}_intersections`,
+		interactive: true,
 		encode: {
 			enter: {
 				path: { field: 'path' },
 				fill: { value: 'grey' },
-				// This is the tooltip for the intersections
 				tooltip: getTooltip(props.children, `${markName}`),
 				fillOpacity: { value: 0 },
 			},
-
+			update: {
+				strokeWidth: { value: 0 },
+				cursor: popovers.length ? { value: 'pointer' } : undefined,
+			},
 			hover: {
 				stroke: { value: 'black' },
 				strokeWidth: { value: 1 },
 				fill: { value: 'grey' },
-			},
-
-			update: {
-				strokeWidth: { value: 0 },
 			},
 		},
 	});

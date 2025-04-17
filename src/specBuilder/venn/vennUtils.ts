@@ -61,6 +61,7 @@ export const getVennSolution = (props: VennSpecProps) => {
 
 	const allIntersections = filteredData.map((datum) => {
 		const setName = datum.sets.join(',');
+		// Added size to the intersection data
 		const { x: textX, y: textY } = textCenters[setName];
 		return {
 			sets: datum.sets,
@@ -68,6 +69,7 @@ export const getVennSolution = (props: VennSpecProps) => {
 			text: datum.label || datum.sets.join('∩'),
 			textY,
 			textX,
+			size: datum.size
 		};
 	});
 

@@ -49,13 +49,27 @@ const VennStory: StoryFn<VennProps> = (args) => {
 			<Venn orientation={-Math.PI / 2} normalize {...args} metric='radius'>
 				<ChartTooltip />
 				<ChartPopover>
-				{(datum) => (
-				<Content>
-					<h3 style={{ margin: "0 0 8px 0" }}>Set {datum.set}</h3>
-					<hr style={{ margin: "8px 0" }} />
-					<div>Size: {datum.size}</div>
-				</Content>
-    )}
+					{(datum) => (
+						console.log("Datum:", datum),
+						<Content>
+							{datum.sets ? (
+								// Intersection
+								<>
+									<h3 style={{ margin: "0 0 8px 0" }}>Intersection</h3>
+									<div>Sets: {datum.sets}</div>
+									<hr style={{ margin: "8px 0" }} />
+									<div>Size: {datum.radius || datum.size}</div>
+								</>
+							) : (
+								// Single set
+								<>
+									<h3 style={{ margin: "0 0 8px 0" }}>Set {datum.set}</h3>
+									<hr style={{ margin: "8px 0" }} />
+									<div>Size: {Math.sqrt(datum.size/2)}</div>
+								</>
+							)}
+						</Content>
+					)}
 				</ChartPopover>
 			</Venn>
 			<Legend highlight />
@@ -69,7 +83,14 @@ const Basic = bindWithProps(VennStory);
 
 const WithToolTip = bindWithProps(VennStory);
 WithToolTip.args = {
-  children: interactiveChildren
+	children: interactiveChildren
 }
 
-export { Basic, WithToolTip };
+const popoverContent = [<ChartTooltip key={0}/>]
+
+const WithPopover = bindWithProps(VennStory);
+WithPopover.args = {
+	children: popoverContent
+}
+
+export { Basic, WithToolTip, WithPopover };
