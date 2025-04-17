@@ -17,8 +17,9 @@ import { StoryFn } from '@storybook/react';
 import { bindWithProps } from '@test-utils';
 import { Chart } from 'Chart';
 
-import { ChartProps, Datum, VennProps } from '../../../types';
 import { Content } from '@adobe/react-spectrum';
+
+import { ChartProps, Datum, VennProps } from '../../../types';
 
 export default {
 	title: 'RSC/Venn',
@@ -27,9 +28,9 @@ export default {
 
 const defaultChartProps: ChartProps = {
 	data: [
-		{ sets: ['A'], radius: 6, label: "" },
-		{ sets: ['B'], radius: 12, label: "" },
-		{ sets: ['C'], radius: 18, label: "" },
+		{ sets: ['A'], radius: 6, name: '' },
+		{ sets: ['B'], radius: 12, name: '' },
+		{ sets: ['C'], radius: 18, name: '' },
 		{ sets: ['A', 'B'], radius: 2 },
 		{ sets: ['A', 'C'], radius: 4 },
 		{ sets: ['B', 'C'], radius: 6 },

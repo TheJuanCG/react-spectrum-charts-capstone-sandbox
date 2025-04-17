@@ -41,7 +41,7 @@ export const addVenn = produce<
 			normalize = false,
 			orientation = Math.PI,
 			name,
-      metric,
+			metric,
 			children,
 			index = 0,
 			color = DEFAULT_COLOR,
@@ -53,15 +53,15 @@ export const addVenn = produce<
 		const vennProps: VennSpecProps = {
 			children: sanitizeMarkChildren(children),
 			name: toCamelCase(name ?? `venn${index}`),
-      dimension: "",
-      markType: "symbol",
+			dimension: '',
+			markType: 'symbol',
 			normalize,
 			index,
 			colorScheme,
 			color,
 			orientation,
 			data: data,
-      metric: metric,
+			metric: metric,
 			...props,
 		};
 		spec.data = addData(spec.data ?? [], vennProps);
@@ -80,6 +80,7 @@ export const addData = produce<Data[], [VennSpecProps]>((data, props) => {
 		transform: [
 			{ type: 'formula', as: 'rscSeriesId', expr: 'datum.set' },
 			{ type: 'identifier', as: 'rscMarkId' },
+			{ type: 'formula', as: 'strokeSize', expr: 'datum.size * 1' },
 		],
 	});
 	data.push({ name: 'intersections', values: intersections });
@@ -110,6 +111,28 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 	});
 
 	marks.push({
+		type: 'symbol',
+		name: `${props.name}_stroke`,
+		from: { data: 'circles' },
+		interactive: false,
+		encode: {
+			enter: {
+				x: { field: 'x' },
+				y: { field: 'y' },
+				size: { field: 'strokeSize' },
+				shape: { value: 'circle' },
+				fill: { scale: COLOR_SCALE, field: 'set' },
+			},
+			update: {
+				stroke: { scale: COLOR_SCALE, field: 'set' },
+				strokeWidth: { value: 1 },
+				fillOpacity: { value: 0 },
+				opacity: getMarkOpacity(props),
+			},
+		},
+	});
+
+	marks.push({
 		type: 'path',
 		from: { data: 'intersections' },
 		name: `${props.name}_intersections`,
@@ -118,17 +141,14 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 				path: { field: 'path' },
 				fill: { value: 'grey' },
 				tooltip: getTooltip(props.children, `${props.name}`),
-				fillOpacity: { value: 0 },
 			},
 
 			hover: {
-				stroke: { value: 'black' },
-				strokeWidth: { value: 1 },
-				fill: { value: 'grey' },
+				fillOpacity: { value: 1 },
 			},
 
 			update: {
-				strokeWidth: { value: 0 },
+				fillOpacity: { value: 0 },
 			},
 		},
 	});
@@ -137,7 +157,7 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 	marks.push({
 		type: 'text',
 		from: { data: 'circles' },
-    interactive: false,
+		interactive: false,
 		encode: {
 			enter: {
 				x: { field: 'textX' },
@@ -155,7 +175,7 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 	marks.push({
 		type: 'text',
 		from: { data: 'intersections' },
-    interactive: false,
+		interactive: false,
 		encode: {
 			enter: {
 				x: { field: 'textX' },
