@@ -17,7 +17,8 @@ import { StoryFn } from '@storybook/react';
 import { bindWithProps } from '@test-utils';
 import { Chart } from 'Chart';
 
-import { ChartProps, Datum, VennProps } from '../../../types';
+import { ChartProps, VennProps, } from '../../../types';
+import { ChartPopover } from '@components/ChartPopover';
 import { Content } from '@adobe/react-spectrum';
 
 export default {
@@ -27,9 +28,9 @@ export default {
 
 const defaultChartProps: ChartProps = {
 	data: [
-		{ sets: ['A'], radius: 6, label: "" },
-		{ sets: ['B'], radius: 12, label: "" },
-		{ sets: ['C'], radius: 18, label: "" },
+		{ sets: ['A'], radius: 6 },
+		{ sets: ['B'], radius: 12 },
+		{ sets: ['C'], radius: 18 },
 		{ sets: ['A', 'B'], radius: 2 },
 		{ sets: ['A', 'C'], radius: 4 },
 		{ sets: ['B', 'C'], radius: 6 },
@@ -45,27 +46,30 @@ const VennStory: StoryFn<VennProps> = (args) => {
 	const chartProps = useChartProps({ ...defaultChartProps });
 	return (
 		<Chart {...chartProps} debug>
-			<Venn orientation={-Math.PI / 2} normalize {...args} metric="radius" />
+			<Venn orientation={-Math.PI / 2} normalize {...args} metric='radius'>
+				<ChartTooltip />
+				<ChartPopover>
+				{(datum) => (
+				<Content>
+					<h3 style={{ margin: "0 0 8px 0" }}>Set {datum.set}</h3>
+					<hr style={{ margin: "8px 0" }} />
+					<div>Size: {datum.size}</div>
+				</Content>
+    )}
+				</ChartPopover>
+			</Venn>
 			<Legend highlight />
 		</Chart>
 	);
 };
 
-const dialogContent = (datum: Datum) => {
-	return (
-		<Content>
-			<div>{datum.text}</div>
-		</Content>
-	);
-};
-
-const interactiveChildren = [<ChartTooltip key={0}>{dialogContent}</ChartTooltip>];
+const interactiveChildren = [<ChartTooltip key={0}/>]
 
 const Basic = bindWithProps(VennStory);
 
 const WithToolTip = bindWithProps(VennStory);
 WithToolTip.args = {
-	children: interactiveChildren,
-};
+  children: interactiveChildren
+}
 
 export { Basic, WithToolTip };

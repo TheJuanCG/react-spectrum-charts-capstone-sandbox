@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { VennSpecProps } from 'types';
+import { MarkChildElement, VennSpecProps } from 'types';
 import {
 	type CircleRecord,
 	type TextCenterRecord,
@@ -19,6 +19,8 @@ import {
 	scaleSolution,
 	venn,
 } from 'venn-helper';
+import { HighlightedItem } from 'types';
+import { hasPopover, isInteractive } from '@specBuilder/marks/markUtils';
 
 export const getVennSolution = (props: VennSpecProps) => {
 	const { data, orientation, normalize, metric, setField } = props;
@@ -84,3 +86,22 @@ export const getVennSolution = (props: VennSpecProps) => {
 
 	return { circles: circlesData, intersections, allIntersections };
 };
+
+export const getInteractiveMarkName = (
+	children: MarkChildElement[],
+	markName: string,
+	highlightedItem?: HighlightedItem,
+	props?: any
+  ): string | undefined => {
+	if (isInteractive(children, props) || highlightedItem !== undefined) {
+	  return markName;
+	}
+	return undefined;
+  };
+  
+  export const getPopoverMarkName = (children: MarkChildElement[], markName: string): string | undefined => {
+	if (hasPopover(children)) {
+	  return markName;
+	}
+	return undefined;
+  };

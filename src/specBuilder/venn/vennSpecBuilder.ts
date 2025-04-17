@@ -9,18 +9,19 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { COLOR_SCALE, DEFAULT_COLOR, DEFAULT_COLOR_SCHEME, DEFAULT_METRIC, FILTERED_TABLE, TABLE } from '@constants';
+import { COLOR_SCALE, DEFAULT_COLOR, DEFAULT_COLOR_SCHEME, DEFAULT_METRIC, FILTERED_TABLE, TABLE, SELECTED_GROUP, COMPONENT_NAME } from '@constants';
 import { getMarkOpacity, getTooltip, getTooltipProps, hasInteractiveChildren } from '@specBuilder/marks/markUtils';
 // Added in these to match bar spec builder
 import { addFieldToFacetScaleDomain } from '@specBuilder/scale/scaleSpecBuilder';
-import { addHighlightedItemSignalEvents } from '@specBuilder/signal/signalSpecBuilder';
+import { addHighlightedItemSignalEvents, addHighlightedSeriesSignalEvents } from '@specBuilder/signal/signalSpecBuilder';
 import { sanitizeMarkChildren, toCamelCase } from '@utils';
 import { produce } from 'immer';
 import { Data, FilterTransform, FormulaTransform, Mark, Scale, Signal, Spec } from 'vega';
 
 import { VennProps } from '../../types';
 import type { ChartData, ColorScheme, HighlightedItem, VennSpecProps } from '../../types';
-import { getVennSolution } from './vennUtils';
+import { getInteractiveMarkName, getPopoverMarkName, getVennSolution } from './vennUtils';
+import { addPopoverData, getPopovers } from '@specBuilder/chartPopover/chartPopoverUtils';
 
 export const addVenn = produce<
 	Spec,
@@ -32,6 +33,10 @@ export const addVenn = produce<
 			index?: number;
 			idKey: string;
 			data: ChartData;
+			interactiveMarkName?: string;
+			popoverMarkName?: string;
+			markType: string;
+			dimension: string;
 		}
 	]
 >(
@@ -41,33 +46,40 @@ export const addVenn = produce<
 			normalize = false,
 			orientation = Math.PI,
 			name,
-      metric,
+			metric = DEFAULT_METRIC,
 			children,
 			index = 0,
 			color = DEFAULT_COLOR,
 			colorScheme = DEFAULT_COLOR_SCHEME,
 			data,
+			idKey = "set",
+			markType = "venn",
+			dimension = "venn",
 			...props
 		}
 	) => {
 		const vennProps: VennSpecProps = {
 			children: sanitizeMarkChildren(children),
 			name: toCamelCase(name ?? `venn${index}`),
-      dimension: "",
-      markType: "symbol",
+			dimension,
+			markType: 'symbol',
 			normalize,
 			index,
 			colorScheme,
 			color,
 			orientation,
 			data: data,
-      metric: metric,
+			metric,
+			idKey,
+			interactiveMarkName: getInteractiveMarkName(sanitizeMarkChildren(children), toCamelCase(name ?? `venn${index}`), props.highlightedItem, props),
+			popoverMarkName: getPopoverMarkName(sanitizeMarkChildren(children), toCamelCase(name ?? `venn${index}`)),
 			...props,
 		};
 		spec.data = addData(spec.data ?? [], vennProps);
-		spec.marks = addMarks(spec.marks ?? [], vennProps);
-		spec.scales = addScales(spec.scales ?? [], vennProps);
 		spec.signals = addSignals(spec.signals ?? [], vennProps);
+		spec.scales = addScales(spec.scales ?? [], vennProps);
+		spec.marks = addMarks(spec.marks ?? [], vennProps);
+
 	}
 );
 
@@ -87,13 +99,24 @@ export const addData = produce<Data[], [VennSpecProps]>((data, props) => {
 	const tableIndex = data.findIndex((d) => d.name === TABLE);
 	data[tableIndex].transform = data[tableIndex].transform ?? [];
 	data[tableIndex].transform?.push(...getVennTransforms());
+
+	// Pass the proper idKey to addPopoverData
+	addPopoverData(data, {
+		...props,
+		idKey: 'set',
+	}, true);
 });
 
 export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
+	const popovers = getPopovers(props);
+	const markName = props.name ?? 'venn';
+
+	// Create circle mark
 	marks.push({
 		type: 'symbol',
-		name: props.name,
+		name: markName,
 		from: { data: 'circles' },
+		interactive: true,
 		encode: {
 			enter: {
 				x: { field: 'x' },
@@ -103,21 +126,38 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 				shape: { value: 'circle' },
 				fill: { scale: COLOR_SCALE, field: 'set' },
 			},
+			// This is how we handle the opacity of the circles for when there are popovers and we select a set
 			update: {
-				opacity: getMarkOpacity(props, 0.5),
+				opacity: [
+					{
+						test: `${SELECTED_GROUP} && ${SELECTED_GROUP} == datum.set`,
+						value: 1
+					},
+					{
+						test: `${SELECTED_GROUP} && ${SELECTED_GROUP} !== datum.set`,
+						value: 0.3
+					},
+					{
+						value: .7
+					}
+				],
+				// Add cursor pointer when there are popovers
+				cursor: popovers.length ? { value: 'pointer' } : undefined,
 			},
-		},
+		}
 	});
 
 	marks.push({
 		type: 'path',
 		from: { data: 'intersections' },
-		name: `${props.name}_intersections`,
+		// This is the name of the mark
+		name: `${markName}_intersections`,
 		encode: {
 			enter: {
 				path: { field: 'path' },
 				fill: { value: 'grey' },
-				tooltip: getTooltip(props.children, `${props.name}`),
+				// This is the tooltip for the intersections
+				tooltip: getTooltip(props.children, `${markName}`),
 				fillOpacity: { value: 0 },
 			},
 
@@ -137,7 +177,7 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 	marks.push({
 		type: 'text',
 		from: { data: 'circles' },
-    interactive: false,
+		interactive: false,
 		encode: {
 			enter: {
 				x: { field: 'textX' },
@@ -155,7 +195,7 @@ export const addMarks = produce<Mark[], [VennSpecProps]>((marks, props) => {
 	marks.push({
 		type: 'text',
 		from: { data: 'intersections' },
-    interactive: false,
+		interactive: false,
 		encode: {
 			enter: {
 				x: { field: 'textX' },
@@ -189,8 +229,39 @@ export const getVennTransforms = (): (FormulaTransform | FilterTransform)[] => [
 
 export const addSignals = produce<Signal[], [VennSpecProps]>((signals, props) => {
 	const { children, name, idKey } = props;
+	const popovers = getPopovers(props);
+	
+	// Make sure selectedGroup signal exists
+	if (!signals.some(signal => signal.name === SELECTED_GROUP)) {
+		signals.push({
+			name: SELECTED_GROUP,
+			value: null,
+			on: [
+				{
+				events: {source: 'view', type: 'click', filter: "!event.item || !datum"},
+				update: "null"
+				}
+			]
+		});
+	}
+	
+	// If we have popovers, add a click handler to update selectedGroup
+	if (popovers.length) {
+		const selectedGroupSignal = signals.find(signal => signal.name === SELECTED_GROUP);
+		if (selectedGroupSignal) {
+			if (!selectedGroupSignal.on) {
+				selectedGroupSignal.on = [];
+			}
+			selectedGroupSignal.on.push({
+				events: `@${name}:click`,
+				update: `datum.set`  // This is the set name
+			});
+		}
+	}
+
 	if (!hasInteractiveChildren(children)) return;
 	addHighlightedItemSignalEvents(signals, name, idKey, 1, getTooltipProps(children)?.excludeDataKeys);
+	addHighlightedSeriesSignalEvents(signals, name, 1);
 });
 
 /*
