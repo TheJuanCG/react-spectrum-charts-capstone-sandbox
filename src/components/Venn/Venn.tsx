@@ -15,15 +15,8 @@ import { VENN_DEFAULT_STYLES } from '@specBuilder/venn/vennDefaults';
 
 import { VennProps } from '../../types';
 
-// export interface VennProps extends MarkProps {
-//   /** angle for orientation of the venn diagram*/
-//   orientation: number;
-//   /** wethere the Venn is normalized through chart width*/
-//   normalize: boolean;
-// }
-
 const Venn: FC<VennProps> = ({ orientation, setField, metric, style = VENN_DEFAULT_STYLES }) => {
-  return null;
+	return null;
 };
 
 Venn.displayName = 'Venn';

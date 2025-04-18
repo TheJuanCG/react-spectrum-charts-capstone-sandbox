@@ -9,7 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { VennSpecProps, VennProps } from '../../types';
+import { hasPopover, isInteractive } from '@specBuilder/marks/markUtils';
 import {
 	type CircleRecord,
 	type TextCenterRecord,
@@ -19,6 +19,8 @@ import {
 	scaleSolution,
 	venn,
 } from 'venn-helper';
+
+import { ClickableChartProps, HighlightedItem, MarkChildElement, VennProps, VennSpecProps } from '../../types';
 import { SET_ID_DELIMITER, VENN_DEFAULT_STYLES } from './vennDefaults';
 
 export const getVennSolution = (props: VennSpecProps) => {
@@ -59,15 +61,17 @@ export const getVennSolution = (props: VennSpecProps) => {
 	}
 
 	const allIntersections = filteredData.map((datum) => {
-    // we join by comma here to because its the output of venn-helper
+		// we join by comma here to because its the output of venn-helper
 		const setName = datum.sets.join(',');
+		// Added size to the intersection data
 		const { x: textX, y: textY } = textCenters[setName];
 		return {
-      set_id: datum.sets.join(SET_ID_DELIMITER),
+			set_id: datum.sets.join(SET_ID_DELIMITER),
 			sets: datum.sets,
 			path: intersectionAreaPath(datum.sets.map((set) => circles[set])),
 			textY,
 			textX,
+			size: datum.size,
 		};
 	});
 
@@ -87,11 +91,29 @@ export const getVennSolution = (props: VennSpecProps) => {
 };
 
 export function mergeStylesWithDefaults(style: VennProps['style']) {
-  return {
-    fontSize: style?.fontSize ?? VENN_DEFAULT_STYLES.fontSize,
-    padding: style?.padding ?? VENN_DEFAULT_STYLES.padding,
-    fontWeight: style?.fontWeight ?? VENN_DEFAULT_STYLES.fontWeight,
-    intersectionFill: style?.intersectionFill ?? VENN_DEFAULT_STYLES.intersectionFill,
-    color: style?.color ?? VENN_DEFAULT_STYLES.color,
-  } satisfies Required<VennProps['style']>;
+	return {
+		fontSize: style?.fontSize ?? VENN_DEFAULT_STYLES.fontSize,
+		padding: style?.padding ?? VENN_DEFAULT_STYLES.padding,
+		fontWeight: style?.fontWeight ?? VENN_DEFAULT_STYLES.fontWeight,
+		intersectionFill: style?.intersectionFill ?? VENN_DEFAULT_STYLES.intersectionFill,
+		color: style?.color ?? VENN_DEFAULT_STYLES.color,
+	} satisfies Required<VennProps['style']>;
 }
+
+export const getInteractiveMarkName = (
+	children: MarkChildElement[],
+	markName: string,
+	highlightedItem?: HighlightedItem,
+): string | undefined => {
+	if (isInteractive(children) || highlightedItem !== undefined) {
+		return markName;
+	}
+	return undefined;
+};
+
+export const getPopoverMarkName = (children: MarkChildElement[], markName: string): string | undefined => {
+	if (hasPopover(children)) {
+		return markName;
+	}
+	return undefined;
+};
