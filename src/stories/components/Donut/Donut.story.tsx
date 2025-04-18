@@ -36,8 +36,9 @@ const DonutStory: StoryFn<DonutProps & { width?: number; height?: number }> = (a
 	const { width, height, ...donutProps } = args;
 	const chartProps = useChartProps({ ...defaultChartProps, width: width ?? 350, height: height ?? 350 });
 	return (
-		<Chart {...chartProps}>
+		<Chart {...chartProps} debug>
 			<Donut {...donutProps} />
+			<Legend highlight/>
 		</Chart>
 	);
 };
@@ -45,7 +46,7 @@ const DonutStory: StoryFn<DonutProps & { width?: number; height?: number }> = (a
 const DonutLegendStory: StoryFn<typeof Donut> = (args): ReactElement => {
 	const chartProps = useChartProps({ ...defaultChartProps, width: 400 });
 	return (
-		<Chart {...chartProps}>
+		<Chart {...chartProps} debug>
 			<Donut {...args} />
 			<Legend title="Browsers" position={'right'} highlight isToggleable />
 		</Chart>
@@ -71,7 +72,7 @@ const BooleanStory: StoryFn<typeof Donut> = (args): ReactElement => {
 				</Donut>
 			</Chart>
 
-			<Chart {...negativeBooleanProps}>
+			<Chart {...negativeBooleanProps} debug>
 				<Donut {...args}>
 					<DonutSummary label="Success rate" />
 				</Donut>

@@ -19,6 +19,7 @@ import {
 	AxisChildElement,
 	AxisProps,
 	BarProps,
+	ChartData,
 	ChartPopoverProps,
 	ChartTooltipProps,
 	ColorFacet,
@@ -42,6 +43,7 @@ import {
 	TrendlineAnnotationProps,
 	TrendlineChildElement,
 	TrendlineProps,
+	VennProps,
 } from './Chart';
 
 type PartiallyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
@@ -276,3 +278,21 @@ export interface ReferenceLineSpecProps extends PartiallyRequired<ReferenceLineP
 	colorScheme: ColorScheme;
 	name: string;
 }
+
+type VennPropsWithDefaults = 'orientation' | 'name' | 'style';
+
+export interface VennSpecProps extends PartiallyRequired<VennProps, VennPropsWithDefaults> {
+	children: MarkChildElement[];
+	colorScheme: ColorScheme;
+	highlightedItem?: HighlightedItem;
+	idKey: string;
+	index: number;
+	dimension: string;
+	data: ChartData;
+	markType: string;
+	chartWidth: number;
+	chartHeight: number;
+	style: Required<RequiredVennProps['style']>;
+}
+
+type RequiredVennProps = Required<VennProps>;

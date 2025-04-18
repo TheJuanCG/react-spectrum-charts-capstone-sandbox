@@ -34,6 +34,8 @@ export default function useSpec({
 	symbolShapes,
 	symbolSizes,
 	title,
+  chartHeight,
+  chartWidth,
 	UNSAFE_vegaSpec,
 }: SanitizedSpecProps): Spec {
 	return useMemo(() => {
@@ -53,11 +55,13 @@ export default function useSpec({
 
 		// or we need to build their spec
 		// stringify-parse so that all immer stuff gets cleared out
+    // if venn in children 
 		return JSON.parse(
 			JSON.stringify(
 				buildSpec({
 					backgroundColor,
 					children,
+          data,
 					colors,
 					colorScheme,
 					description,
@@ -67,6 +71,8 @@ export default function useSpec({
 					idKey,
 					lineTypes,
 					lineWidths,
+          chartWidth,
+          chartHeight,
 					opacities,
 					symbolShapes,
 					symbolSizes,

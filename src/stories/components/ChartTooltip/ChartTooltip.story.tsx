@@ -39,7 +39,7 @@ const barData = browserData.map((datum) =>
 const StackedBarTooltipStory: StoryFn<typeof ChartTooltip> = (args): ReactElement => {
 	const chartProps = useChartProps({ data: barData, width: 600 });
 	return (
-		<Chart {...chartProps}>
+		<Chart {...chartProps} debug>
 			<Bar color="series">
 				<ChartTooltip {...args} />
 			</Bar>
