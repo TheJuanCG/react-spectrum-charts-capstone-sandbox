@@ -12,38 +12,38 @@
 import { Align, Baseline, NumberValue, ScaleType } from 'vega';
 
 import {
-	AnnotationProps,
-	AreaProps,
-	AxisAnnotationChildElement,
-	AxisAnnotationProps,
-	AxisChildElement,
-	AxisProps,
-	BarProps,
-	ChartData,
-	ChartPopoverProps,
-	ChartTooltipProps,
-	ColorFacet,
-	ColorScheme,
-	DonutProps,
-	DonutSummaryProps,
-	FacetRef,
-	HighlightedItem,
-	InteractionMode,
-	LegendProps,
-	LineProps,
-	LineWidth,
-	MarkChildElement,
-	MetricRangeProps,
-	Orientation,
-	ReferenceLineProps,
-	ScaleType as RscScaleType,
-	ScatterPathProps,
-	ScatterProps,
-	SegmentLabelProps,
-	TrendlineAnnotationProps,
-	TrendlineChildElement,
-	TrendlineProps,
-	VennProps,
+  AnnotationProps,
+  AreaProps,
+  AxisAnnotationChildElement,
+  AxisAnnotationProps,
+  AxisChildElement,
+  AxisProps,
+  BarProps,
+  ChartData,
+  ChartPopoverProps,
+  ChartTooltipProps,
+  ColorFacet,
+  ColorScheme,
+  DonutProps,
+  DonutSummaryProps,
+  FacetRef,
+  HighlightedItem,
+  InteractionMode,
+  LegendProps,
+  LineProps,
+  LineWidth,
+  MarkChildElement,
+  MetricRangeProps,
+  Orientation,
+  ReferenceLineProps,
+  ScaleType as RscScaleType,
+  ScatterPathProps,
+  ScatterProps,
+  SegmentLabelProps,
+  TrendlineAnnotationProps,
+  TrendlineChildElement,
+  TrendlineProps,
+  VennProps,
 } from './Chart';
 
 type PartiallyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
@@ -51,243 +51,248 @@ type PartiallyRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 type AreaPropsWithDefaults = 'name' | 'dimension' | 'metric' | 'color' | 'scaleType' | 'opacity';
 
 export interface AreaSpecProps extends PartiallyRequired<AreaProps, AreaPropsWithDefaults> {
-	colorScheme: ColorScheme;
-	highlightedItem?: HighlightedItem;
-	idKey: string;
-	index: number;
-	children: MarkChildElement[];
-	markType: 'area';
+  colorScheme: ColorScheme;
+  highlightedItem?: HighlightedItem;
+  idKey: string;
+  index: number;
+  children: MarkChildElement[];
+  markType: 'area';
 }
 
 type AxisPropsWithDefaults =
-	| 'baseline'
-	| 'baselineOffset'
-	| 'granularity'
-	| 'grid'
-	| 'hideDefaultLabels'
-	| 'labelAlign'
-	| 'labelFontWeight'
-	| 'labelOrientation'
-	| 'labels'
-	| 'numberFormat'
-	| 'subLabels'
-	| 'ticks';
+  | 'baseline'
+  | 'baselineOffset'
+  | 'granularity'
+  | 'grid'
+  | 'hideDefaultLabels'
+  | 'labelAlign'
+  | 'labelFontWeight'
+  | 'labelOrientation'
+  | 'labels'
+  | 'numberFormat'
+  | 'subLabels'
+  | 'ticks';
 
 export interface AxisSpecProps extends PartiallyRequired<AxisProps, AxisPropsWithDefaults> {
-	name: string;
-	colorScheme: ColorScheme;
-	index: number;
-	scaleType: ScaleType;
-	children: AxisChildElement[];
-	vegaLabelAlign?: Align;
-	vegaLabelBaseline?: Baseline;
-	vegaLabelOffset?: NumberValue;
-	vegaLabelPadding?: number;
+  name: string;
+  colorScheme: ColorScheme;
+  index: number;
+  scaleType: ScaleType;
+  children: AxisChildElement[];
+  vegaLabelAlign?: Align;
+  vegaLabelBaseline?: Baseline;
+  vegaLabelOffset?: NumberValue;
+  vegaLabelPadding?: number;
 }
 
 type AxisAnnotationPropsWithDefaults = 'name' | 'offset' | 'dataKey' | 'color' | 'options' | 'format';
 
 export interface AxisAnnotationSpecProps
-	extends PartiallyRequired<AxisAnnotationProps, AxisAnnotationPropsWithDefaults> {
-	axisName: string;
-	children: AxisAnnotationChildElement[];
-	colorScheme: ColorScheme;
+  extends PartiallyRequired<AxisAnnotationProps, AxisAnnotationPropsWithDefaults> {
+  axisName: string;
+  children: AxisAnnotationChildElement[];
+  colorScheme: ColorScheme;
 }
 
 type BarPropsWithDefaults =
-	| 'color'
-	| 'dimension'
-	| 'hasSquareCorners'
-	| 'lineType'
-	| 'lineWidth'
-	| 'metric'
-	| 'name'
-	| 'opacity'
-	| 'paddingRatio'
-	| 'orientation'
-	| 'trellisOrientation'
-	| 'trellisPadding'
-	| 'type';
+  | 'color'
+  | 'dimension'
+  | 'hasSquareCorners'
+  | 'lineType'
+  | 'lineWidth'
+  | 'metric'
+  | 'name'
+  | 'opacity'
+  | 'paddingRatio'
+  | 'orientation'
+  | 'trellisOrientation'
+  | 'trellisPadding'
+  | 'type';
 
 export interface BarSpecProps extends PartiallyRequired<BarProps, BarPropsWithDefaults> {
-	children: MarkChildElement[];
-	colorScheme: ColorScheme;
-	dimensionScaleType: 'band';
-	highlightedItem?: HighlightedItem;
-	idKey: string;
-	index: number;
-	interactiveMarkName: string | undefined;
-	markType: 'bar';
-	dimensionDataType?: string;
+  children: MarkChildElement[];
+  colorScheme: ColorScheme;
+  dimensionScaleType: 'band';
+  highlightedItem?: HighlightedItem;
+  idKey: string;
+  index: number;
+  interactiveMarkName: string | undefined;
+  markType: 'bar';
+  dimensionDataType?: string;
 }
 
 type AnnotationPropsWithDefaults = 'textKey';
 
 export interface AnnotationSpecProps extends PartiallyRequired<AnnotationProps, AnnotationPropsWithDefaults> {
-	barProps: BarSpecProps;
-	dataName: string;
-	dimensionField: string;
-	dimensionScaleName: string;
+  barProps: BarSpecProps;
+  dataName: string;
+  dimensionField: string;
+  dimensionScaleName: string;
 }
 
 type ChartTooltipPropsWithDefaults = 'highlightBy';
 
 export interface ChartTooltipSpecProps extends PartiallyRequired<ChartTooltipProps, ChartTooltipPropsWithDefaults> {
-	markName: string;
+  markName: string;
 }
 
 type ChartPopoverPropsWithDefaults = 'UNSAFE_highlightBy';
 
 export interface ChartPopoverSpecProps extends PartiallyRequired<ChartPopoverProps, ChartPopoverPropsWithDefaults> {
-	markName: string;
+  markName: string;
 }
 
 type DonutPropsWithDefaults = 'color' | 'metric' | 'name' | 'startAngle' | 'holeRatio' | 'isBoolean';
 
 export interface DonutSpecProps extends PartiallyRequired<DonutProps, DonutPropsWithDefaults> {
-	children: MarkChildElement[];
-	colorScheme: ColorScheme;
-	highlightedItem?: HighlightedItem;
-	idKey: string;
-	index: number;
-	markType: 'donut';
+  children: MarkChildElement[];
+  colorScheme: ColorScheme;
+  highlightedItem?: HighlightedItem;
+  idKey: string;
+  index: number;
+  markType: 'donut';
 }
 
 type DonutSummaryPropsWithDefaults = 'numberFormat';
 
 export interface DonutSummarySpecProps extends PartiallyRequired<DonutSummaryProps, DonutSummaryPropsWithDefaults> {
-	donutProps: DonutSpecProps;
+  donutProps: DonutSpecProps;
 }
 
 type SegmentLabelPropsWithDefaults = 'percent' | 'value' | 'valueFormat';
 
 export interface SegmentLabelSpecProps extends PartiallyRequired<SegmentLabelProps, SegmentLabelPropsWithDefaults> {
-	donutProps: DonutSpecProps;
+  donutProps: DonutSpecProps;
 }
 
 type LegendPropsWithDefaults = 'hiddenEntries' | 'highlight' | 'isToggleable' | 'position' | 'name';
 
 export interface LegendSpecProps extends PartiallyRequired<LegendProps, LegendPropsWithDefaults> {
-	color?: FacetRef<string>;
-	colorScheme: ColorScheme;
-	hiddenSeries: string[];
-	highlightedSeries?: string | number;
-	index: number;
-	lineType?: FacetRef<number[]>;
-	lineWidth?: FacetRef<number>;
-	symbolShape?: FacetRef<string>;
+  color?: FacetRef<string>;
+  colorScheme: ColorScheme;
+  hiddenSeries: string[];
+  highlightedSeries?: string | number;
+  index: number;
+  lineType?: FacetRef<number[]>;
+  lineWidth?: FacetRef<number>;
+  symbolShape?: FacetRef<string>;
 }
 
 type LinePropsWithDefaults = 'name' | 'dimension' | 'metric' | 'color' | 'scaleType' | 'lineType' | 'opacity';
 
 export interface LineSpecProps extends PartiallyRequired<LineProps, LinePropsWithDefaults> {
-	children: MarkChildElement[];
-	colorScheme: ColorScheme;
-	highlightedItem?: HighlightedItem;
-	idKey: string;
-	index: number;
-	interactiveMarkName: string | undefined;
-	isHighlightedByGroup?: boolean;
-	lineWidth?: FacetRef<LineWidth>;
-	markType: 'line';
-	popoverMarkName: string | undefined;
-	interactionMode?: InteractionMode;
+  children: MarkChildElement[];
+  colorScheme: ColorScheme;
+  highlightedItem?: HighlightedItem;
+  idKey: string;
+  index: number;
+  interactiveMarkName: string | undefined;
+  isHighlightedByGroup?: boolean;
+  lineWidth?: FacetRef<LineWidth>;
+  markType: 'line';
+  popoverMarkName: string | undefined;
+  interactionMode?: InteractionMode;
 }
 
 type ScatterPropsWithDefaults =
-	| 'color'
-	| 'colorScaleType'
-	| 'dimension'
-	| 'dimensionScaleType'
-	| 'lineType'
-	| 'lineWidth'
-	| 'metric'
-	| 'name'
-	| 'opacity'
-	| 'size';
+  | 'color'
+  | 'colorScaleType'
+  | 'dimension'
+  | 'dimensionScaleType'
+  | 'lineType'
+  | 'lineWidth'
+  | 'metric'
+  | 'name'
+  | 'opacity'
+  | 'size';
 
 export interface ScatterSpecProps extends PartiallyRequired<ScatterProps, ScatterPropsWithDefaults> {
-	children: MarkChildElement[];
-	colorScheme: ColorScheme;
-	highlightedItem?: HighlightedItem;
-	idKey: string;
-	index: number;
-	interactiveMarkName: string | undefined;
-	markType: 'scatter';
+  children: MarkChildElement[];
+  colorScheme: ColorScheme;
+  highlightedItem?: HighlightedItem;
+  idKey: string;
+  index: number;
+  interactiveMarkName: string | undefined;
+  markType: 'scatter';
 }
 
 type ScatterPathPropsWithDefaults = 'color' | 'groupBy' | 'pathWidth' | 'opacity';
 
 export interface ScatterPathSpecProps extends PartiallyRequired<ScatterPathProps, ScatterPathPropsWithDefaults> {
-	colorScheme: ColorScheme;
-	dimension: string;
-	dimensionScaleType: RscScaleType;
-	metric: string;
-	index: number;
-	name: string;
+  colorScheme: ColorScheme;
+  dimension: string;
+  dimensionScaleType: RscScaleType;
+  metric: string;
+  index: number;
+  name: string;
 }
 
 type MetricRangePropsWithDefaults = 'lineType' | 'lineWidth' | 'rangeOpacity' | 'metricEnd' | 'metricStart' | 'metric';
 export interface MetricRangeSpecProps extends PartiallyRequired<MetricRangeProps, MetricRangePropsWithDefaults> {
-	name: string;
+  name: string;
 }
 
 type TrendlinePropsWithDefaults =
-	| 'dimensionExtent'
-	| 'dimensionRange'
-	| 'displayOnHover'
-	| 'highlightRawPoint'
-	| 'lineType'
-	| 'lineWidth'
-	| 'method'
-	| 'opacity'
-	| 'orientation';
+  | 'dimensionExtent'
+  | 'dimensionRange'
+  | 'displayOnHover'
+  | 'highlightRawPoint'
+  | 'lineType'
+  | 'lineWidth'
+  | 'method'
+  | 'opacity'
+  | 'orientation';
 
 export interface TrendlineSpecProps extends PartiallyRequired<TrendlineProps, TrendlinePropsWithDefaults> {
-	children: TrendlineChildElement[];
-	colorScheme: ColorScheme;
-	dimensionScaleType: RscScaleType;
-	isDimensionNormalized: boolean;
-	metric: string;
-	name: string;
-	trendlineColor: ColorFacet;
-	trendlineDimension: string;
-	trendlineMetric: string;
+  children: TrendlineChildElement[];
+  colorScheme: ColorScheme;
+  dimensionScaleType: RscScaleType;
+  isDimensionNormalized: boolean;
+  metric: string;
+  name: string;
+  trendlineColor: ColorFacet;
+  trendlineDimension: string;
+  trendlineMetric: string;
 }
 
 type TrendlineAnnotationPropsWithDefaults = 'badge' | 'dimensionValue' | 'numberFormat' | 'prefix';
 
 export interface TrendlineAnnotationSpecProps
-	extends PartiallyRequired<TrendlineAnnotationProps, TrendlineAnnotationPropsWithDefaults> {
-	colorScheme: ColorScheme;
-	displayOnHover: boolean;
-	markName: string;
-	name: string;
-	trendlineColor: ColorFacet;
-	trendlineDimension: string;
-	trendlineDimensionExtent: TrendlineSpecProps['dimensionExtent'];
-	trendlineDimensionScaleType: RscScaleType;
-	trendlineName: string;
-	trendlineOrientation: Orientation;
-	trendlineWidth: number;
+  extends PartiallyRequired<TrendlineAnnotationProps, TrendlineAnnotationPropsWithDefaults> {
+  colorScheme: ColorScheme;
+  displayOnHover: boolean;
+  markName: string;
+  name: string;
+  trendlineColor: ColorFacet;
+  trendlineDimension: string;
+  trendlineDimensionExtent: TrendlineSpecProps['dimensionExtent'];
+  trendlineDimensionScaleType: RscScaleType;
+  trendlineName: string;
+  trendlineOrientation: Orientation;
+  trendlineWidth: number;
 }
 
 type ReferenceLinePropsWithDefaults = 'color' | 'iconColor' | 'labelColor' | 'layer' | 'labelFontWeight';
 
 export interface ReferenceLineSpecProps extends PartiallyRequired<ReferenceLineProps, ReferenceLinePropsWithDefaults> {
-	colorScheme: ColorScheme;
-	name: string;
+  colorScheme: ColorScheme;
+  name: string;
 }
 
-type VennPropsWithDefaults = 'normalize' | 'orientation' | 'name';
+type VennPropsWithDefaults = 'orientation' | 'name' | 'style';
 
 export interface VennSpecProps extends PartiallyRequired<VennProps, VennPropsWithDefaults> {
-	children: MarkChildElement[];
-	colorScheme: ColorScheme;
-	highlightedItem?: HighlightedItem;
-	idKey: string;
-	index: number;
-  dimension: string,
-	data: ChartData;
-	markType: 'symbol';
+  children: MarkChildElement[];
+  colorScheme: ColorScheme;
+  highlightedItem?: HighlightedItem;
+  idKey: string;
+  index: number;
+  dimension: string;
+  data: ChartData;
+  markType: 'symbol';
+  chartWidth: number;
+  chartHeight: number;
+  style: Required<RequiredVennProps['style']>;
 }
+
+type RequiredVennProps = Required<VennProps>;

@@ -9,23 +9,14 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-import { FC } from 'react';
-
-import { VENN_DEFAULT_STYLES } from '@specBuilder/venn/vennDefaults';
-
 import { VennProps } from '../../types';
 
-// export interface VennProps extends MarkProps {
-//   /** angle for orientation of the venn diagram*/
-//   orientation: number;
-//   /** wethere the Venn is normalized through chart width*/
-//   normalize: boolean;
-// }
+export const VENN_DEFAULT_STYLES = {
+  fontSize: 16,
+  padding: 0,
+  fontWeight: 'normal',
+  intersectionFill: 'static-blue',
+  color: 'white',
+} satisfies Required<VennProps['style']>;
 
-const Venn: FC<VennProps> = ({ orientation, setField, metric, style = VENN_DEFAULT_STYLES }) => {
-  return null;
-};
-
-Venn.displayName = 'Venn';
-
-export { Venn };
+export const SET_ID_DELIMITER = '∩';

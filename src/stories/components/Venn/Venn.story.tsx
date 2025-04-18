@@ -22,51 +22,61 @@ import { Content } from '@adobe/react-spectrum';
 import { ChartProps, Datum, VennProps } from '../../../types';
 
 export default {
-	title: 'RSC/Venn',
-	component: Venn,
+  title: 'RSC/Venn',
+  component: Venn,
 };
 
 const defaultChartProps: ChartProps = {
-	data: [
-		{ sets: ['A'], radius: 6, name: '' },
-		{ sets: ['B'], radius: 12, name: '' },
-		{ sets: ['C'], radius: 18, name: '' },
-		{ sets: ['A', 'B'], radius: 2 },
-		{ sets: ['A', 'C'], radius: 4 },
-		{ sets: ['B', 'C'], radius: 6 },
-		{ sets: ['A', 'B'], radius: 4 },
-		{ sets: ['A', 'B', 'C'], radius: 1 },
-	],
+  data: [
+    { sets: ['A'], radius: 12 },
+    { sets: ['B'], radius: 12 },
+    { sets: ['C'], radius: 12 },
+    { sets: ['A', 'B'], radius: 2 },
+    { sets: ['A', 'C'], radius: 2 },
+    { sets: ['B', 'C'], radius: 2 },
+    { sets: ['A', 'B', 'C'], radius: 1 },
+  ],
 
-	height: 450,
-	width: 600,
+  height: 350,
+  width: 350,
 };
 
-const VennStory: StoryFn<VennProps> = (args) => {
-	const chartProps = useChartProps({ ...defaultChartProps });
-	return (
-		<Chart {...chartProps} debug>
-			<Venn orientation={-Math.PI / 2} normalize {...args} metric="radius" />
-			<Legend highlight />
-		</Chart>
-	);
+const BasicVennStory: StoryFn<VennProps> = (args) => {
+  const chartProps = useChartProps({ ...defaultChartProps });
+  return (
+    <Chart {...chartProps} debug>
+      <Venn orientation={Math.PI / 2} {...args} metric="radius" />
+    </Chart>
+  );
+};
+
+const VennStoryWithLegend: StoryFn<VennProps> = (args) => {
+  const chartProps = useChartProps({ ...defaultChartProps });
+  return (
+    <Chart {...chartProps} debug>
+      <Venn orientation={Math.PI / 2} {...args} metric="radius" />
+      <Legend highlight />
+    </Chart>
+  );
 };
 
 const dialogContent = (datum: Datum) => {
-	return (
-		<Content>
-			<div>{datum.text}</div>
-		</Content>
-	);
+  return (
+    <Content>
+      <div>{datum['set_id']}</div>
+    </Content>
+  );
 };
 
 const interactiveChildren = [<ChartTooltip key={0}>{dialogContent}</ChartTooltip>];
 
-const Basic = bindWithProps(VennStory);
+const Basic = bindWithProps(BasicVennStory);
 
-const WithToolTip = bindWithProps(VennStory);
+const WithLegend = bindWithProps(VennStoryWithLegend);
+
+const WithToolTip = bindWithProps(BasicVennStory);
 WithToolTip.args = {
-	children: interactiveChildren,
+  children: interactiveChildren,
 };
 
-export { Basic, WithToolTip };
+export { Basic, WithLegend, WithToolTip };
