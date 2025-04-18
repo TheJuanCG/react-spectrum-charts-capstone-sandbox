@@ -34,6 +34,8 @@ export default function useSpec({
 	symbolShapes,
 	symbolSizes,
 	title,
+  chartHeight,
+  chartWidth,
 	UNSAFE_vegaSpec,
 }: SanitizedSpecProps): Spec {
 	return useMemo(() => {
@@ -69,6 +71,8 @@ export default function useSpec({
 					idKey,
 					lineTypes,
 					lineWidths,
+          chartWidth,
+          chartHeight,
 					opacities,
 					symbolShapes,
 					symbolSizes,

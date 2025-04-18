@@ -103,6 +103,8 @@ export function buildSpec(props: SanitizedSpecProps) {
     symbolShapes,
     symbolSizes,
     title,
+    chartHeight,
+    chartWidth
   } = props;
   let spec = initializeSpec(null, { backgroundColor, colorScheme, description, title });
   spec.signals = getDefaultSignals(props);
@@ -121,7 +123,7 @@ export function buildSpec(props: SanitizedSpecProps) {
   buildOrder.set(Axis, 2);
   buildOrder.set(Title, 3);
 
-  let { areaCount, axisCount, barCount, comboCount, donutCount, legendCount, lineCount, scatterCount, vennCount} =
+  let { areaCount, axisCount, barCount, comboCount, donutCount, legendCount, lineCount, scatterCount, vennCount } =
     initializeComponentCounts();
   const specProps = { colorScheme, idKey, highlightedItem };
   spec = [...children]
@@ -151,7 +153,7 @@ export function buildSpec(props: SanitizedSpecProps) {
           return addDonut(acc, { ...(cur as DonutElement).props, ...specProps, index: donutCount });
         case Venn.displayName:
           vennCount++;
-          return addVenn(acc, { ...(cur as VennElement).props, ...specProps, index: vennCount, data: data });
+          return addVenn(acc, { ...(cur as VennElement).props, ...specProps, index: vennCount, data: data, chartHeight, chartWidth });
         case Legend.displayName:
           legendCount++;
           return addLegend(acc, {

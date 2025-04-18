@@ -131,6 +131,8 @@ export const RscChart = forwardRef<ChartHandle, RscChartProps>(
 			opacities,
 			colorScheme,
 			title,
+			chartWidth,
+			chartHeight,
 			UNSAFE_vegaSpec,
 		});
 
@@ -162,7 +164,6 @@ export const RscChart = forwardRef<ChartHandle, RscChartProps>(
 		} = useLegend(sanitizedChildren); // gets props from the legend if it exists
 
 		const tooltips = useTooltips(sanitizedChildren);
-    console.log(tooltips)
 		const popovers = usePopovers(sanitizedChildren);
 		const markClickDetails = useMarkOnClickDetails(sanitizedChildren);
 
@@ -194,7 +195,7 @@ export const RscChart = forwardRef<ChartHandle, RscChartProps>(
 				}
 				// get the correct tooltip to render based on the hovered item
 				const tooltip = tooltips.find((t) => t.name === value[COMPONENT_NAME]);
-        console.log(tooltip)
+				console.log(tooltip);
 				if (tooltip?.callback && !('index' in value)) {
 					if (controlledHoveredIdSignal) {
 						chartView.current?.signal(controlledHoveredIdSignal.name, value?.[idKey] ?? null);
